@@ -1,0 +1,250 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+	
+<!-- 				<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+<!-- 				<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> -->
+<!-- 				<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> -->
+
+	<!-- Table -->
+				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+				</script>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js">
+				</script>
+				<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js">
+				</script>
+				
+				<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+				<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
+				</script>
+				<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js">
+				</script>			
+				<script src="https://cdn.datatables.net/plug-ins/1.13.7/api/sum().js">
+				</script>
+			
+<!-- 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">    -->
+	
+    <title>Getting Started: Serving Web Content</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+  
+	<div class="container-fluid">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+ 			 <a class="navbar-brand" href="/" >Esso Utility Stage Version</a>
+
+ 			 </nav>
+ 			 
+ 	<div class = "container-fluid" style="margin-top:10px;">
+  		<div class="row">
+  		
+ <!-- Colonna Vuota 
+    		<div class="col-md-auto">    			
+    		</div> -->
+    		
+ <!-- Colonna Form -->
+    		<div class="col-md-auto">      		
+      			<form style="margin-top:30px" action="#" th:action="@{/save}" th:object="${sell}" method="POST">
+  					  					
+  					<div class="form-group">
+    				<label for="data">Data</label>
+   					<input type="date" th:field="*{data}" class="form-control" id="exampleInputData">
+  					</div>
+  					
+  					<div class="form-group">
+  					<label for="exampleInputEmail1">Prodotto</label>
+  					<select class="form-control" th:field="*{prodotto}"  id="exampleFormControlSelect1">
+  
+      					<option value="BENZINA">Benzina</option>
+      					<option value="DIESEL">Diesel</option>
+      					<option value="S-DIESEL">Supreme Diesel</option>    
+   					 </select>
+					</div>
+ 					
+ 					<div class="form-group">
+    				<label for="valueqta">Quantità</label>
+   					<input type="number" th:field="*{quantità}" step="0.0001" class="form-control" id="exampleInputPassword1" placeholder="L">
+  					</div>
+  					
+  					<div class="form-group">
+    				<label for="valuee">Prezzo €/l (Lordo)</label>
+   					<input type="number" th:field="*{pu}" step="0.0000001" class="form-control" id="exampleInputPassword1" placeholder="€">
+  					</div>
+  					
+  					<div class="form-group">
+  					<label for="exampleInputStazione">Stazione</label>
+  					<input type="text" th:field="*{stazione}" class="form-control" id="exampleInputPassword1" readonly>
+
+					</div>
+ 
+ 					 <button type="submit" class="btn btn-primary">Insert</button>
+				</form>
+				
+    		</div>
+    		
+<!-- Riepilogo -->
+    		<div class="col-md-auto">
+    		<h1 style="margin-top:30px">Benzina</h1>
+			<div class="table-responsive">
+			
+			<table  class="table table-striped display nowrap" id="sortTable" width="80%" height="33,33%">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Prodotto</th>      
+                        <th scope="col">Quantità</th> 
+                        <th scope="col">Pu</th>
+<!--                         <th scope="col">Stazione</th>  -->
+                        <th scope="col">Totale</th>
+                        <th scope="col">Azione</th>
+                        <th scope="col">Margine</th>
+                        <th scope="col">MargTot</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr scope="row" th:each="sel : ${listSellVerga}">                    
+                    <td th:text="${sel.sell.id}"></td>
+                    <td th:text="${sel.sell.data}"></td>
+                    <td th:text="${sel.sell.prodotto}"></td>
+                    <td th:text="${sel.sell.quantità}"></td>
+                    <td th:text="${sel.sell.pu}"></td>
+<!--                     <td th:text="${sel.sell.stazione}"></td> -->
+                    <td th:text="${sel.sell.quantità * sel.sell.pu}"></td>
+                    <td>
+                    <a th:href="@{/update_sell/{id} (id=${sel.sell.id})}" class="btn btn-primary">Update</a>
+                    <a th:href="@{/deleteSell/{id}(id=${sel.sell.id})}" class="btn btn-danger" 
+                    onclick="if (!confirm('Confermi Eliminazione?')) return false">Delete</a></td>
+                    <td th:text="${sel.margine}"></td>
+                    <td th:text="${sel.sell.quantità * sel.margine}"></td>
+                    
+                    
+                </tr>
+            </tbody>
+            <tfoot>
+		        <tr>   
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		        </tr>
+		    </tfoot>
+        </table>
+    </div>
+    		
+    		<h1> Diesel</h1>
+    		<div class="table-responsive">
+			<table  class="table table-striped display nowrap" id="sortTable1" width="80%" height="33,33%">
+                <thead>
+                    <tr>
+                       <th scope="col">Id</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Prodotto</th>      
+                        <th scope="col">Quantità</th> 
+                        <th scope="col">Pu</th>
+<!--                         <th scope="col">Stazione</th>  -->
+                        <th scope="col">Totale</th>
+                        <th scope="col">Azione</th>
+                        <th scope="col">Margine</th>
+                        <th scope="col">MargTot</th>
+                                        
+                    </tr>
+                </thead>
+                <tbody>
+                <tr scope="row" th:each="sel : ${listDiesel}">
+                    <td th:text="${sel.sell.id}"></td>
+                    <td th:text="${sel.sell.data}"></td>
+                    <td th:text="${sel.sell.prodotto}"></td>
+                    <td th:text="${sel.sell.quantità}"></td>
+                    <td th:text="${sel.sell.pu}"></td>
+<!--                     <td th:text="${sel.sell.stazione}"></td> -->
+                    <td th:text="${sel.sell.quantità * sel.sell.pu}"></td>
+                    <td>
+                    <a th:href="@{/update_sell/{id} (id=${sel.sell.id})}" class="btn btn-primary">Update</a>
+                    <a th:href="@{/deleteSell/{id}(id=${sel.sell.id})}" class="btn btn-danger" 
+                    onclick="if (!confirm('Confermi Eliminazione?')) return false">Delete</a></td>
+                    <td th:text="${sel.margine}"></td>
+                    <td th:text="${sel.sell.quantità * sel.margine}"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+		        <tr>   
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		        </tr>
+		    </tfoot>
+        </table></div>
+    		
+    		<h1> Supreme</h1>
+    		<div class="table-responsive">
+			<table  class="table table-striped display nowrap" id="sortTable2" width="80%" height="33,33%">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Prodotto</th>      
+                        <th scope="col">Quantità</th> 
+                        <th scope="col">Pu</th>
+<!--                         <th scope="col">Stazione</th>  -->
+                        <th scope="col">Totale</th>
+                        <th scope="col">Azione</th>
+                        <th scope="col">Margine</th>
+                        <th scope="col">MargTot</th>
+                                        
+                    </tr>
+                </thead>
+                <tbody>
+                <tr scope="row" th:each="sel : ${listSup}">
+                     <td th:text="${sel.sell.id}"></td>
+                    <td th:text="${sel.sell.data}"></td>
+                    <td th:text="${sel.sell.prodotto}"></td>
+                    <td th:text="${sel.sell.quantità}"></td>
+                    <td th:text="${sel.sell.pu}"></td>
+<!--                     <td th:text="${sel.sell.stazione}"></td> -->
+                    <td th:text="${sel.sell.quantità * sel.sell.pu}"></td>
+                    <td>
+                    <a th:href="@{/update_sell/{id} (id=${sel.sell.id})}" class="btn btn-primary">Update</a>
+                    <a th:href="@{/deleteSell/{id}(id=${sel.sell.id})}" class="btn btn-danger" 
+                    onclick="if (!confirm('Confermi Eliminazione?')) return false">Delete</a></td>
+                    <td th:text="${sel.margine}"></td>
+                    <td th:text="${sel.sell.quantità * sel.margine}"></td>
+                </tr>
+            </tbody>
+            <tfoot>
+		        <tr>   
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		           <td></td>
+		        </tr>
+		    </tfoot>
+        </table></div>
+    		
+    		</div>
+    	</div>
+	</div>
+    		
+    </div>
+
+<script src="/js/carburante.js"></script>
+</body>
+
+</html>

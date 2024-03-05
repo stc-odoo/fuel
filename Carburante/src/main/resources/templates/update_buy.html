@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">   
+	
+    <title>Getting Started: Serving Web Content</title> 
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+  
+	<div class="container-fluid">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+ 			 <a class="navbar-brand" href="/" >Esso Utility Stage Version</a>
+ 			 </nav>
+ 			 
+ 	<div class = "container" style="margin-top:10px">
+ 	<h1 style="margin-top:30px">Acquisti</h1>
+  		<div class="row">
+  		
+ <!-- Colonna Vuota 
+    		<div class="col-md-auto">    			
+    		</div> -->
+    		
+ <!-- Colonna Form -->
+    		<div class="col">  
+    		<form style="margin-top:10px" action="#" th:action="@{/save_buy}" th:object="${buy}" method="POST">
+  					
+  					<div class="form-group">
+    				<label for="id">ID</label>
+   					<input type="text" th:field="*{id}" class="form-control" id="exampleInputData" readonly>
+  					</div>
+  					  					
+  					<div class="form-group">
+    				<label for="data">Data</label>
+   					<input type="date" th:field="*{data}" class="form-control" id="exampleInputData">
+  					</div>
+  					
+  					<div class="form-group">
+  					<label for="exampleInputEmail1">Prodotto</label>
+  					<select class="form-control" th:field="*{prodotto}"  id="exampleFormControlSelect1">
+  
+      					<option value="BENZINA">Benzina</option>
+      					<option value="DIESEL">Diesel</option>
+      					<option value="S-DIESEL">Supreme Diesel</option>    
+   					 </select>
+					</div>
+ 					
+ 					<div class="form-group">
+    				<label for="valueqta">Quantità</label>
+   					<input type="number" th:field="*{quantità}" step="0.0001" class="form-control" id="exampleInputPassword1" placeholder="L">
+  					</div>
+  					
+  					<div class="form-group">
+    				<label for="valuee">Prezzo €/l (Imponibile)</label>
+   					<input type="number" th:field="*{pu}" step="0.0000001" class="form-control" id="exampleInputPassword1" placeholder="€">
+  					</div>
+  					
+  					<div class="form-group">
+  					<label for="exampleInputEmail1">Prodotto</label>
+  					<select class="form-control" th:field="*{stazione}"  id="exampleFormControlSelect1">
+  
+      					<option value="Verga">Via Verga</option>
+      					<option value="Stazione">Via Stazione</option>
+   
+   					 </select>
+					</div>
+ 
+ 					 <button type="submit" class="btn btn-primary">Insert</button>
+				</form>    		
+			<div class=table-responsive style="height: 50%; margin-top:40px">
+			<h2>Via Verga</h2>
+			<table  class="table table-striped table-sm" width="100%">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Prodotto</th>      
+                        <th scope="col">Quantità</th> 
+                        <th scope="col">Pu</th>
+                        <th scope="col">Stazione</th> 
+                        <th scope="col">Totale</th>
+                        <th scope="col">Azione</th>
+                                        
+                    </tr>
+                </thead>
+                <tbody>
+                <tr scope="row" th:each="all_buy : ${buyList}">
+                    <td th:text="${all_buy.id}"></td>
+                    <td th:text="${all_buy.data}"></td>
+                    <td th:text="${all_buy.prodotto}"></td>
+                    <td th:text="${all_buy.quantità}"></td>
+                    <td th:text="${all_buy.pu}"></td>
+                    <td th:text="${all_buy.stazione}"></td>
+                    <td th:text="${all_buy.quantità * all_buy.pu}"></td>
+                    <td>
+                    <a th:href="@{/update_buy/{id}  (id=${all_buy.id})}" class="btn btn-primary">Update</a>
+                    <a th:href="@{/delete_buy/{id} (id=${all_buy.id})}" class="btn btn-danger" 
+                    onclick="if (!confirm('Confermi Eliminazione?')) return false">Delete</a></td>
+              
+                </tr>
+            </tbody>
+        </table></div>
+			
+    		
+    		</div>
+    		
+<!-- Riepilogo -->
+    		<div class="col-md-auto">
+    		</div>
+    	</div>
+	</div>
+    		
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
