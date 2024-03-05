@@ -1,5 +1,5 @@
 $('#sortTable').DataTable( {
-	
+    
 	columnDefs : [
                 {
                     "render": function ( data, type, row ) {
@@ -34,6 +34,7 @@ $('#sortTable').DataTable( {
                     "targets": [8] // Apply this render function to the second column (index 1)
                 }
             ],
+    
 	
 	
 	

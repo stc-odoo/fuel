@@ -6,9 +6,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.reitano.carburanti.acquisti.acquisti;
 import com.reitano.carburanti.vendite.vendite;
 
+@Service
 public class Margine{
 	private vendite	sell;
 	private double margine;
@@ -58,6 +61,7 @@ public class Margine{
 		Iterator<acquisti> acq= acquisti.iterator();
 		Iterator<vendite> ven= vendite.iterator();
 		
+		
 		while (acq.hasNext()) {
 			acquisti aaux= acq.next();
 			serbatoio=serbatoio+aaux.getQuantità();
@@ -88,5 +92,49 @@ public class Margine{
 		return aux;
 	}
 		
+	public StringBuilder getMounthMargin(List<acquisti> acquisti, List<vendite> vendite) {
+		
+		List<Margine> marg= this.tableVendite(acquisti, vendite);
+		
+		StringBuilder str=new StringBuilder();
+		
+		str.append("Mese\tQuantità\tTotale\t\tMargine\n");
+		double sumMargine=0.0;
+		double sumQuantità=0.0;
+		double sumTotEur=0.0;
+		
 	
-}
+			for(int mese=1; mese<12; mese++) {
+					for(int i=0; i<marg.size(); i++) {
+						if(mese==Integer.parseInt(marg.get(i).getSell().getData().toString().substring(5, 7))) {
+							sumMargine=sumMargine+(marg.get(i).getMargine()*marg.get(i).getSell().getQuantità());
+							sumQuantità= sumQuantità+marg.get(i).getSell().getQuantità();
+							sumTotEur=sumTotEur+(marg.get(i).getSell().getPu()*marg.get(i).getSell().getQuantità());
+						}				
+												
+					}
+					sumQuantità=Math.round(sumQuantità*100);
+					sumQuantità=sumQuantità/100;
+					String qta= String.valueOf(sumQuantità).replace(".", ",");
+					
+					sumTotEur=Math.round(sumTotEur*100);
+					sumTotEur=sumTotEur/100;
+					String tot= String.valueOf(sumTotEur).replace(".", ",");
+					
+					sumMargine=Math.round(sumMargine*100);
+					sumMargine=sumMargine/100;
+					String mar= String.valueOf(sumMargine).replace(".", ",");
+					
+					
+					str.append(mese+"\t"+qta+"\t"+tot+"\t"+mar+"\n");
+					sumMargine=0;
+					sumQuantità=0;
+					sumTotEur=0;
+					}			
+			return str;
+	}
+		
+	}
+
+	
+

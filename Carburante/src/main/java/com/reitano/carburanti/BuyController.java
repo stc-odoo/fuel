@@ -38,8 +38,7 @@ public class BuyController {
 				stazione.add(aux.get(i));
 		}
 		
-		
-		
+				
 		model.addAttribute("buy",acquisti);
 		model.addAttribute("buyListVerga", verga);
 		model.addAttribute("buyListStazione", stazione);
