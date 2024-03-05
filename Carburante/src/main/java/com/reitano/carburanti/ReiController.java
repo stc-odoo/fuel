@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.reitano.carburanti.acquisti.*;
 import com.reitano.carburanti.vendite.sell_service;
 import com.reitano.carburanti.vendite.vendite;
+import com.reitano.carburanti.TXTSer.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,7 +36,41 @@ public class ReiController {
 	public String getIndex(@RequestParam(defaultValue = "") String azienda,@RequestParam(defaultValue = "") String tipo,
 			Model model
 			) {
-	
+		
+		azienda="Stazione";
+		List<Margine> diesel= new Margine().tableVendite(buyService.findStazProd(azienda, "DIESEL"), this.sellService.getStazProd(azienda, "DIESEL"));
+		List<Margine> benzina= new Margine().tableVendite(buyService.findStazProd(azienda, "BENZINA"), this.sellService.getStazProd(azienda, "BENZINA"));
+		List<Margine> sup= new Margine().tableVendite(buyService.findStazProd(azienda, "S-DIESEL"), this.sellService.getStazProd(azienda, "S-DIESEL"));
+		
+		String ListBenz=azienda + "\n\n";
+		Double sumQ=0.0;
+		Double sumT=0.0;
+		Double sumM=0.0;
+		ArrayList<String> mese=new ArrayList<String>();
+
+		System.out.println("Benzina "+azienda);
+		mese.add("Benzina "+azienda);
+		for (int m=1; m<13; m++) {			
+			for (int benz=0; benz<benzina.size();benz++) {			
+				if (m==Integer.parseInt(benzina.get(benz).getSell().getData().toString().substring(5, 7))) {
+					sumQ= benzina.get(benz).getSell().getQuantità() + sumQ;
+					sumM= (benzina.get(benz).getMargine()*benzina.get(benz).getSell().getQuantità()) + sumM;
+				}					
+			}
+			sumQ=(double) Math.round(sumQ*100);
+			sumQ=sumQ/100;
+			
+			sumM=(double) Math.round(sumM*100);
+			sumM=sumM/100;
+			
+			System.out.print("Mese: "+m+" Quantità Venduta: "+sumQ+" Margine Totale= "+sumM+"\n");
+			mese.add("Mese: "+String.valueOf(m) +". Quantità Venduta: "+String.valueOf(sumQ)+". Margine Totale= "+String.valueOf(sumM));
+			sumQ=0.0;
+			sumM=0.0;
+		}
+		
+		model.addAttribute("stazione", mese);
+				
 		return "index";
 		}
 	
@@ -51,23 +86,8 @@ public class ReiController {
 		//List<vendite> auxBenz=sellService.getStazProd(azienda, "Benzina");
 		List<Margine> auxBenz=benzina;
 		List<Margine> auxDies=diesel;
-		List<Margine> auxSup=sup;
-		
-		/*Sperazione Vendite
-			for(int i=0; i<auxS.size(); i++) {
-				if (auxS.get(i).getStazione().equals(azienda)) {
-						if(auxS.get(i).getProdotto().equals("Benzina")) {
-							auxBenz.add(auxS.get(i));
-						}else if (auxS.get(i).getProdotto().equals("Diesel")) {
-							auxDies.add(auxS.get(i));
-						}else {
-							auxSup.add(auxS.get(i));
-						}
-				}
-			}*/
-				
-			
-			
+		List<Margine> auxSup=sup;		
+						
 		model.addAttribute("listSellVerga", auxBenz);
 		model.addAttribute("listDiesel", auxDies);
 		model.addAttribute("listSup", auxSup);
@@ -114,6 +134,44 @@ public class ReiController {
 	
         return "/js/carburante.js";
     }
+	
+	@GetMapping("/export")
+	public String Export(@RequestParam(defaultValue ="") String azienda){
+
+		List<Margine> diesel= new Margine().tableVendite(buyService.findStazProd(azienda, "DIESEL"), this.sellService.getStazProd(azienda, "DIESEL"));
+		List<Margine> benzina= new Margine().tableVendite(buyService.findStazProd(azienda, "BENZINA"), this.sellService.getStazProd(azienda, "BENZINA"));
+		List<Margine> sup= new Margine().tableVendite(buyService.findStazProd(azienda, "S-DIESEL"), this.sellService.getStazProd(azienda, "S-DIESEL"));
+		
+		String ListBenz=azienda + "\n\n";
+		Double sumQ=0.0;
+		Double sumT=0.0;
+		Double sumM=0.0;
+		String mese="";
+
+		System.out.println("Benzina "+azienda);
+		for (int m=1; m<13; m++) {			
+			for (int benz=0; benz<benzina.size();benz++) {			
+				if (m==Integer.parseInt(benzina.get(benz).getSell().getData().toString().substring(5, 7))) {
+					sumQ= benzina.get(benz).getSell().getQuantità() + sumQ;
+					sumM= (benzina.get(benz).getMargine()*benzina.get(benz).getSell().getQuantità()) + sumM;
+				}					
+			}
+			sumQ=(double) Math.round(sumQ*100);
+			sumQ=sumQ/100;
+			
+			sumM=(double) Math.round(sumM*100);
+			sumM=sumM/100;
+			
+			System.out.print("Mese: "+m+" Quantità Venduta: "+sumQ+" Margine Totale= "+sumM+"\n");
+			sumQ=0.0;
+			sumM=0.0;
+		}
+		
+		
+		
+		
+		return "redirect:/greeting?azienda="+azienda;
+	}
 	
 
 }

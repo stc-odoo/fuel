@@ -32,9 +32,16 @@
 								  </li>
 								  
 								  
-								</ul> 			
+								</ul> 
+									
     					</div>
-    		
+    					<div class="col-md-auto" > 
+    							<table style="margin-top: 50px">
+								 <tr scope="row" th:each="sel : ${stazione}">                    
+                    			 <td th:text="${sel}"></td>	
+                    			 </tr>	
+                    			 </table>
+                    			 </div>
     			</div>
     		
     		 </div>
