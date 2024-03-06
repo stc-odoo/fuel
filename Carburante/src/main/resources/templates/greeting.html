@@ -82,14 +82,13 @@
  
  					 <button type="submit" class="btn btn-primary">Insert</button>
 				</form>
-				
+				<a th:object=${sell} th:href="@{/export?azienda={az}&carb=BENZINA (az=${sell.stazione})}"><button class="btn btn-primary" style="margin-top:10px" type="button" >Esporta Dati</button></a>
     		</div>
     		
 <!-- Riepilogo -->
     		<div class="col-md-auto">
     		<h1 style="margin-top:30px">Benzina</h1>
 			<div class="table-responsive">
-			<a class="nav-link" href="/export?azienda=Stazione&carb=BENZINA"><button class="nav-link" type="button" >Esporta Dati</button></a>
 			<table  class="table table-striped display nowrap" id="sortTable" width="80%" height="33,33%">
                 <thead>
                     <tr>

@@ -146,14 +146,17 @@ public class ReiController {
 	public ResponseEntity<byte[]> Export(@RequestParam(defaultValue ="") String azienda, @RequestParam(defaultValue ="") String carb) throws IOException{
 		
 		System.out.println(azienda + carb + "test");
-		List<Margine> diesel= new Margine().tableVendite(buyService.findStazProd(azienda, "DIESEL"), this.sellService.getStazProd(azienda, "DIESEL"));
-		List<Margine> benzina= new Margine().tableVendite(buyService.findStazProd(azienda, "BENZINA"), this.sellService.getStazProd(azienda, "BENZINA"));
-		List<Margine> sup= new Margine().tableVendite(buyService.findStazProd(azienda, "S-DIESEL"), this.sellService.getStazProd(azienda, "S-DIESEL"));
 		Margine servMar=new Margine();
 		
 		StringBuilder csvContent= new StringBuilder();
-		csvContent.append(azienda + " "+carb +"\n");
-		csvContent.append(servMar.getMounthMargin(buyService.findStazProd(azienda, carb), this.sellService.getStazProd(azienda, carb)));
+		csvContent.append("Via "+ azienda + " "+"BENZINA" +"\n");
+		csvContent.append(servMar.getMounthMargin(buyService.findStazProd(azienda, "BENZINA"), this.sellService.getStazProd(azienda, "BENZINA")));
+		csvContent.append("\n\n\n");
+		csvContent.append("Via "+azienda + " DIESEL\n");
+		csvContent.append(servMar.getMounthMargin(buyService.findStazProd(azienda, "DIESEL"), this.sellService.getStazProd(azienda, "DIESEL")));
+		csvContent.append("\n\n\n");
+		csvContent.append("Via "+azienda + " SUPREME\n");
+		csvContent.append(servMar.getMounthMargin(buyService.findStazProd(azienda, "S-DIESEL"), this.sellService.getStazProd(azienda, "S-DIESEL")));
 		/*csvContent.append("id\tdata\tquantità;PU;Totale;Margine;MarginTot");
 		
 		for(Margine margine: benzina) {

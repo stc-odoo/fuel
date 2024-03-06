@@ -126,7 +126,7 @@ public class Margine{
 					String mar= String.valueOf(sumMargine).replace(".", ",");
 					
 					
-					str.append(mese+"\t"+qta+"\t"+tot+"\t"+mar+"\n");
+					str.append(mese+"\t"+qta+"\t"+tot+" €\t"+mar+" €\n");
 					sumMargine=0;
 					sumQuantità=0;
 					sumTotEur=0;
