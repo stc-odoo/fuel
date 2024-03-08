@@ -26,6 +26,7 @@ public class Margine{
 	public Margine() {
 	
 	}
+	
 
 	public acquisti getBuy() {
 		return buy;
@@ -104,7 +105,7 @@ public class Margine{
 		double sumTotEur=0.0;
 		
 	
-			for(int mese=1; mese<12; mese++) {
+			for(int mese=1; mese<13; mese++) {
 					for(int i=0; i<marg.size(); i++) {
 						if(mese==Integer.parseInt(marg.get(i).getSell().getData().toString().substring(5, 7))) {
 							sumMargine=sumMargine+(marg.get(i).getMargine()*marg.get(i).getSell().getQuantità());
@@ -133,8 +134,41 @@ public class Margine{
 					}			
 			return str;
 	}
+	
+public ArrayList<Double> getbarChart(List<acquisti> acquisti, List<vendite> vendite) {
 		
-	}
+		List<Margine> marg= this.tableVendite(acquisti, vendite);
+		
+		ArrayList<Double> str=new ArrayList<>();
+		
+		double sumMargine=0.0;
+		
+		
+			for(int mese=1; mese<12; mese++) {
+					for(int i=0; i<marg.size(); i++) {
+						if(mese==Integer.parseInt(marg.get(i).getSell().getData().toString().substring(5, 7))) {
+							sumMargine=sumMargine+(marg.get(i).getMargine()*marg.get(i).getSell().getQuantità());
+										
+												
+					}
+						
+					}		
+					sumMargine=Math.round(sumMargine*100);
+					sumMargine=sumMargine/100;
+					String mar= String.valueOf(sumMargine).replace(".", ",");
+					
+					
+					str.add(sumMargine);
+					sumMargine=0;
+		
+			
+			
+			}
+			return str;
+}
+
+}
+
 
 	
 

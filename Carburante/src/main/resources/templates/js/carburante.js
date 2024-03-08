@@ -148,3 +148,8 @@ $('#sortTable2').DataTable( {
                 }
             ]
    } );   
+   
+   $('#sortTable3').DataTable({});
+   $('#sortTable4').DataTable({});
+   
+   

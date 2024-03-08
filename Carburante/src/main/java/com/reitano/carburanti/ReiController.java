@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -142,6 +145,12 @@ public class ReiController {
         return "/js/carburante.js";
     }
 	
+	@GetMapping("/js/bar.js")
+    public String barjs() {	
+		
+		return "/js/bar.js";
+	}
+	
 	@GetMapping("/export")
 	public ResponseEntity<byte[]> Export(@RequestParam(defaultValue ="") String azienda, @RequestParam(defaultValue ="") String carb) throws IOException{
 		
@@ -180,5 +189,31 @@ public class ReiController {
 		return ResponseEntity.ok().headers(headers).body(fileContent);
 	}
 	
-
+	@GetMapping("/barchart")
+    public ResponseEntity<Map<String, Object>> getBarChartData() {
+		Margine aux= new Margine();
+        // Simulazione dei dati
+        Map<String, Object> data = new HashMap<>();
+        data.put("labels", Arrays.asList("1", "2","3","4","5","6","7","8","9","10","11","12"));
+        data.put("values", aux.getbarChart(buyService.findStazProd("Stazione", "BENZINA"), this.sellService.getStazProd("Stazione", "BENZINA")));
+        data.put("values1", aux.getbarChart(buyService.findStazProd("Stazione", "DIESEL"), this.sellService.getStazProd("Stazione", "DIESEL")));
+        data.put("values2", aux.getbarChart(buyService.findStazProd("Stazione", "S-DIESEL"), this.sellService.getStazProd("Stazione", "S-DIESEL")));
+        //data.put("values", "2.3");        
+        return ResponseEntity.ok(data);
+    }
+		
+	@GetMapping("/barchart1")
+    public ResponseEntity<Map<String, Object>> getBarChartData1() {
+		Margine aux= new Margine();
+        // Simulazione dei dati
+        Map<String, Object> data = new HashMap<>();
+        data.put("labels", Arrays.asList("1", "2","3","4","5","6","7","8","9","10","11","12"));
+        data.put("values", aux.getbarChart(buyService.findStazProd("Verga", "BENZINA"), this.sellService.getStazProd("Verga", "BENZINA")));
+        data.put("values1", aux.getbarChart(buyService.findStazProd("Verga", "DIESEL"), this.sellService.getStazProd("Verga", "DIESEL")));
+        data.put("values2", aux.getbarChart(buyService.findStazProd("Verga", "S-DIESEL"), this.sellService.getStazProd("Verga", "S-DIESEL")));
+        //data.put("values", "2.3");        
+        return ResponseEntity.ok(data);
+    }
+	
+	
 }
